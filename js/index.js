@@ -1,3 +1,5 @@
+import { extractDates, showElement, hideElement } from "./utils.js";
+
 document.addEventListener('DOMContentLoaded', () => {
   let lastNoteId = 8;
   let notes = [
@@ -170,7 +172,7 @@ document.addEventListener('DOMContentLoaded', () => {
       summaryTable.appendChild(row);
     });
   }
-  
+
   renderNotes();
   renderSummary();
 })
