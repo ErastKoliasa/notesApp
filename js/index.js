@@ -144,7 +144,9 @@ document.addEventListener('DOMContentLoaded', () => {
       });
 
       deleteButton.addEventListener("click", () => {
-
+        deleteNote(note.id);
+        renderNotes();
+        renderSummary();
       });
 
       if (note.archived) {
@@ -185,6 +187,10 @@ document.addEventListener('DOMContentLoaded', () => {
       }
       return note;
     });
+  }
+
+  function deleteNote(noteId) {
+    notes = notes.filter((note) => note.id !== noteId);
   }
 
   function openEditForm(noteId) {
