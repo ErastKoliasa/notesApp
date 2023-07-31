@@ -138,7 +138,9 @@ document.addEventListener('DOMContentLoaded', () => {
       });
 
       archiveButton.addEventListener("click", () => {
-
+        toggleArchived(note.id);
+        renderNotes();
+        renderSummary();
       });
 
       deleteButton.addEventListener("click", () => {
@@ -170,6 +172,18 @@ document.addEventListener('DOMContentLoaded', () => {
           <td>${archivedCount}</td>
         `;
       summaryTable.appendChild(row);
+    });
+  }
+
+  function toggleArchived(noteId) {
+    notes = notes.map((note) => {
+      if (note.id === noteId) {
+        return {
+          ...note,
+          archived: !note.archived,
+        };
+      }
+      return note;
     });
   }
 
