@@ -173,6 +173,35 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
+  createNoteButton.addEventListener("click", () => showElement(addNoteForm));
+
+  addNoteForm.addEventListener("submit", (event) => {
+    event.preventDefault();
+    const name = noteNameInput.value;
+    const content = noteContentInput.value.trim();
+    const category = noteCategorySelect.value;
+
+    if (name && content && category) {
+      const newNote = {
+        id: lastNoteId++,
+        name,
+        time: new Date().toISOString(),
+        content,
+        category,
+        datesMentioned: extractDates(content),
+        archived: false,
+      };
+      notes.push(newNote);
+      noteNameInput.value = "";
+      noteContentInput.value = "";
+      noteCategorySelect.value = "";
+      renderNotes();
+      renderSummary();
+
+    }
+    hideElement(addNoteForm);
+  });
+
   renderNotes();
   renderSummary();
 })
