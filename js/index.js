@@ -134,7 +134,7 @@ document.addEventListener('DOMContentLoaded', () => {
       const deleteButton = row.querySelector(".deleteButton");
 
       editButton.addEventListener("click", () => {
-
+        openEditForm(note.id);
       });
 
       archiveButton.addEventListener("click", () => {
@@ -171,6 +171,49 @@ document.addEventListener('DOMContentLoaded', () => {
         `;
       summaryTable.appendChild(row);
     });
+  }
+
+  function openEditForm(noteId) {
+    const note = notes.find((note) => note.id === noteId);
+    if (note) {
+      editNoteNameInput.value = note.name;
+      editNoteContentInput.value = note.content;
+      editNoteCategorySelect.value = note.category;
+      editNoteSaveButton.addEventListener("click", () => {
+        saveEditedNote(noteId);
+      });
+      showElement(editNoteForm);
+    }
+  }
+
+  function saveEditedNote(noteId) {
+    try {
+      const noteIndex = notes.findIndex((note) => note.id === noteId);
+      if (noteIndex === -1) {
+        throw new Error("Note not found");
+      }
+
+      const updatedNote = {
+        ...notes[noteIndex],
+        name: editNoteNameInput.value,
+        content: editNoteContentInput.value.trim(),
+        category: editNoteCategorySelect.value,
+        datesMentioned: extractDates(editNoteContentInput.value),
+      };
+
+      notes = [
+        ...notes.slice(0, noteIndex),
+        updatedNote,
+        ...notes.slice(noteIndex + 1),
+      ];
+
+      hideElement(editNoteForm);
+      editNoteSaveButton.removeEventListener("click", saveEditedNote);
+      renderNotes();
+      renderSummary();
+    } catch (error) {
+      console.error("Error saving edited note:", error.message);
+    }
   }
 
   createNoteButton.addEventListener("click", () => showElement(addNoteForm));
